@@ -13,6 +13,8 @@ export class RegisterPage extends BasePage {
 
   alertPopup = this.page.getByTestId('alert-popup');
 
+  emailErrorText = this.page.locator('#octavalidate_email');
+
   constructor(page: Page) {
     super(page);
   }
