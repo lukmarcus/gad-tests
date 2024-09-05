@@ -1,4 +1,4 @@
-import { randomNewArticle } from '../../src/factories/article.factory';
+import { prepareRandomArticle } from '../../src/factories/article.factory';
 import { AddArticleModel } from '../../src/models/article.model';
 import { ArticlePage } from '../../src/pages/article.page';
 import { ArticlesPage } from '../../src/pages/articles.page';
@@ -27,7 +27,7 @@ test.describe('Create, verify and delete article', () => {
   test('create new article', { tag: '@GAD-R04-01' }, async ({ page }) => {
     // Arrange
     const addArticleView = new AddArticleView(page);
-    articleData = randomNewArticle();
+    articleData = prepareRandomArticle();
 
     // Act
     await articlesPage.addArticleButtonLogged.click();
