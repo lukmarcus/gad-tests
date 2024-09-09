@@ -134,14 +134,12 @@ test.describe('Create, verify and delete comment', () => {
         const secondCommentData = prepareRandomComment();
 
         const secondCommentBody =
-          // eslint-disable-next-line playwright/no-nested-step
           await test.step('create comment', async () => {
             await articlePage.addCommentButton.click();
             await addCommentView.createComment(secondCommentData);
             return secondCommentData.body;
           });
 
-        // eslint-disable-next-line playwright/no-nested-step
         await test.step('verify comment', async () => {
           const articleComment =
             articlePage.getArticleComment(secondCommentBody);
