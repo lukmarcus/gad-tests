@@ -42,7 +42,7 @@ test.describe('Create, verify and delete comment', () => {
 
   test(
     'operate on comments',
-    { tag: ['@GAD-R05-01', '@GAD-R05-02', '@GAD-R05-03'] },
+    { tag: ['@GAD-R05-01', '@GAD-R05-02'] },
     async () => {
       const newCommentData = prepareRandomComment();
 
@@ -108,20 +108,47 @@ test.describe('Create, verify and delete comment', () => {
           editCommentData.body,
         );
       });
-
-      await test.step('create and verify second comment', async () => {
+    },
+  );
+  test(
+    'user can add more than one comment to article',
+    { tag: '@GAD-R05-03' },
+    async () => {
+      await test.step('create first comment', async () => {
         // Arrange
-        const secondCommentData = prepareRandomComment();
+        const expectedCommentCreatedPopup = 'Comment was created';
+        const newCommentData = prepareRandomComment();
 
         // Act
         await articlePage.addCommentButton.click();
-        await addCommentView.createComment(secondCommentData);
+
+        await addCommentView.createComment(newCommentData);
 
         // Assert
-        const articleComment = articlePage.getArticleComment(
-          secondCommentData.body,
-        );
-        await expect(articleComment.body).toHaveText(secondCommentData.body);
+        await expect
+          .soft(articlePage.alertPopup)
+          .toHaveText(expectedCommentCreatedPopup);
+      });
+
+      await test.step('create and verify second comment', async () => {
+        const secondCommentData = prepareRandomComment();
+
+        const secondCommentBody =
+          // eslint-disable-next-line playwright/no-nested-step
+          await test.step('create comment', async () => {
+            await articlePage.addCommentButton.click();
+            await addCommentView.createComment(secondCommentData);
+            return secondCommentData.body;
+          });
+
+        // eslint-disable-next-line playwright/no-nested-step
+        await test.step('verify comment', async () => {
+          const articleComment =
+            articlePage.getArticleComment(secondCommentBody);
+          await expect(articleComment.body).toHaveText(secondCommentBody);
+          await articleComment.link.click();
+          await expect(commentPage.commentBody).toHaveText(secondCommentBody);
+        });
       });
     },
   );
