@@ -26,7 +26,7 @@ test.describe('Verify articles', () => {
 
   test(
     'reject creating article without title',
-    { tag: '@GAD-R04-01' },
+    { tag: ['@GAD-R04-01', '@logged'] },
     async () => {
       // Arrange
       const expectedErrorMessage = 'Article was not created';
