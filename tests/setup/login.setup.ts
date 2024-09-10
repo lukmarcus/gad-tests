@@ -1,3 +1,4 @@
+import { STORAGE_STATE } from '../../playwright.config';
 import { LoginPage } from '../../src/pages/login.page';
 import { WelcomePage } from '../../src/pages/welcome.page';
 import { testUser1 } from '../../src/test-data/user.data';
@@ -16,6 +17,7 @@ setup('login with correct credentials', async ({ page }) => {
   const title = await welcomePage.getTitle();
 
   // Assert
-  // eslint-disable-next-line playwright/no-standalone-expect
   expect(title).toContain(expectedLoginTitle);
+
+  await page.context().storageState({ path: STORAGE_STATE });
 });
