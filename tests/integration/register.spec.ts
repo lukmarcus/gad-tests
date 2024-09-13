@@ -1,6 +1,5 @@
 import { prepareRandomUser } from '@_src/factories/user.factory';
 import { RegisterUserModel } from '@_src/models/user.model';
-import { LoginPage } from '@_src/pages/login.page';
 import { RegisterPage } from '@_src/pages/register.page';
 import { expect, test } from '@playwright/test';
 
@@ -17,16 +16,14 @@ test.describe('Verify register', () => {
   test(
     'register with correct data and login',
     { tag: ['@GAD-R03-01', '@GAD-R03-02', '@GAD-R03-03'] },
-    async ({ page }) => {
+    async () => {
       // Arrange
-      const loginPage = new LoginPage(page);
-
       const expectedLoginTitle = 'Login';
       const expectedWelcomeTitle = 'Welcome';
       const expectedAlertPopupText = 'User created';
 
       // Act
-      await registerPage.register(registerUserData);
+      const loginPage = await registerPage.register(registerUserData);
 
       // Assert
       await expect(registerPage.alertPopup).toHaveText(expectedAlertPopupText);
