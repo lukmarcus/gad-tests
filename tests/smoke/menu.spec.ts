@@ -49,7 +49,7 @@ test.describe('Verify main menu buttons', () => {
 
       // Act
       await articlesPage.goto();
-      const homePage = await articlesPage.mainMenu.clickArticlesButton();
+      const homePage = await articlesPage.mainMenu.clickHomePageLink();
       const title = await homePage.getTitle();
 
       // Assert
