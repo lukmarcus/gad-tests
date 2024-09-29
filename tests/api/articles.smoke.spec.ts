@@ -26,12 +26,39 @@ test.describe(
 
         // Act
         const response = await request.get(articlesUrl);
-        const responceJson = await response.json();
+        const responseJson = await response.json();
 
         // Assert
-        expect(responceJson.length).toBeGreaterThanOrEqual(
+        expect(responseJson.length).toBeGreaterThanOrEqual(
           expectedMinArticleCount,
         );
+      },
+    );
+
+    test(
+      'GET articles return article object',
+      { tag: ['@predefined_data', '@api'] },
+      async ({ request }) => {
+        // Arrange
+        const expectedRequiredFields = [
+          'id',
+          'user_id',
+          'title',
+          'body',
+          'date',
+          'image',
+        ];
+        const articlesUrl = '/api/articles';
+
+        // Act
+        const response = await request.get(articlesUrl);
+        const responseJson = await response.json();
+        const article = responseJson[0];
+
+        // Assert
+        expectedRequiredFields.forEach((field) => {
+          expect.soft(article).toHaveProperty(field);
+        });
       },
     );
   },
