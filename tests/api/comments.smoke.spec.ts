@@ -1,65 +1,64 @@
 import { expect, test } from '@_src/fixtures/merge.fixture';
 
 test.describe(
-  'Verify articles API endpoint',
-  { tag: ['@GAD-R08-01', '@api'] },
+  'Verify comments API endpoint',
+  { tag: ['@GAD-R08-02', '@api'] },
   () => {
     test.describe('verify each condition in separate test', () => {
-      test('GET articles returns status code 200', async ({ request }) => {
+      test('GET comments returns status code 200', async ({ request }) => {
         // Arrange
         const expectedStatusCode = 200;
-        const articlesUrl = '/api/articles';
+        const commentsUrl = '/api/comments';
 
         // Act
-        const response = await request.get(articlesUrl);
+        const response = await request.get(commentsUrl);
 
         // Assert
         expect(response.status()).toBe(expectedStatusCode);
       });
 
       test(
-        'GET articles should return at least one article',
+        'GET comments should return at least one comment',
         { tag: ['@predefined_data', '@api'] },
         async ({ request }) => {
           // Arrange
-          const expectedMinArticleCount = 1;
-          const articlesUrl = '/api/articles';
+          const expectedMinCommentCount = 1;
+          const commentsUrl = '/api/comments';
 
           // Act
-          const response = await request.get(articlesUrl);
+          const response = await request.get(commentsUrl);
           const responseJson = await response.json();
 
           // Assert
           expect(responseJson.length).toBeGreaterThanOrEqual(
-            expectedMinArticleCount,
+            expectedMinCommentCount,
           );
         },
       );
 
       test(
-        'GET articles return article object',
+        'GET comments return comment object',
         { tag: ['@predefined_data', '@api'] },
         async ({ request }) => {
           // Arrange
           const expectedRequiredFields = [
             'id',
+            'article_id',
             'user_id',
-            'title',
             'body',
             'date',
-            'image',
           ];
-          const articlesUrl = '/api/articles';
+          const commentsUrl = '/api/comments';
 
           // Act
-          const response = await request.get(articlesUrl);
+          const response = await request.get(commentsUrl);
           const responseJson = await response.json();
-          const article = responseJson[0];
+          const comment = responseJson[0];
 
           // Assert
           expectedRequiredFields.forEach((field) => {
             expect
-              .soft(article, `Expected field ${field} should be in object`)
+              .soft(comment, `Expected field ${field} should be in object`)
               .toHaveProperty(field);
           });
         },
@@ -67,42 +66,41 @@ test.describe(
     });
 
     test(
-      'GET articles should return an object with required fields',
+      'GET comments should return an object with required fields',
       { tag: '@predefined_data' },
       async ({ request }) => {
         // Arrange
-        const articlesUrl = '/api/articles';
-        const response = await request.get(articlesUrl);
+        const commentsUrl = '/api/comments';
+        const response = await request.get(commentsUrl);
 
-        await test.step('GET articles returns status code 200', async () => {
+        await test.step('GET comments returns status code 200', async () => {
           const expectedStatusCode = 200;
 
           expect(response.status()).toBe(expectedStatusCode);
         });
 
         const responseJson = await response.json();
-        await test.step('GET articles should return at least one article', async () => {
-          const expectedMinArticleCount = 1;
+        await test.step('GET comments should return at least one comment', async () => {
+          const expectedMinCommentCount = 1;
 
           expect(responseJson.length).toBeGreaterThanOrEqual(
-            expectedMinArticleCount,
+            expectedMinCommentCount,
           );
         });
 
         const expectedRequiredFields = [
           'id',
+          'article_id',
           'user_id',
-          'title',
           'body',
           'date',
-          'image',
         ];
-        const article = responseJson[0];
+        const comment = responseJson[0];
 
         expectedRequiredFields.forEach(async (field) => {
           await test.step(`response object contains required field: ${field}`, async () => {
             expect
-              .soft(article, `Expected field ${field} should be in object`)
+              .soft(comment, `Expected field ${field} should be in object`)
               .toHaveProperty(field);
           });
         });
