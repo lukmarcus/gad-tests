@@ -4,8 +4,8 @@ import { expect, test } from '@_src/fixtures/merge.fixture';
 import { testUser1 } from '@_src/test-data/user.data';
 
 test.describe(
-  'Verify comments CRUD operations @api',
-  { tag: ['@GAD-R09-02', '@api'] },
+  'Verify comments CRUD operations',
+  { tag: ['@GAD-R09-02', '@crud'] },
   () => {
     let articleId: number;
     let headers: { [key: string]: string };

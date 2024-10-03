@@ -2,7 +2,7 @@ import { expect, test } from '@_src/fixtures/merge.fixture';
 
 test.describe(
   'Verify articles API endpoint',
-  { tag: ['@GAD-R08-01', '@api'] },
+  { tag: ['@GAD-R08-01', '@smoke'] },
   () => {
     test.describe('verify each condition in separate test', () => {
       test('GET articles returns status code 200', async ({ request }) => {
@@ -19,7 +19,7 @@ test.describe(
 
       test(
         'GET articles should return at least one article',
-        { tag: ['@predefined_data', '@api'] },
+        { tag: '@predefined_data' },
         async ({ request }) => {
           // Arrange
           const expectedMinArticleCount = 1;
@@ -38,7 +38,7 @@ test.describe(
 
       test(
         'GET articles return article object',
-        { tag: ['@predefined_data', '@api'] },
+        { tag: '@predefined_data' },
         async ({ request }) => {
           // Arrange
           const expectedRequiredFields = [

@@ -2,7 +2,7 @@ import { expect, test } from '@_src/fixtures/merge.fixture';
 
 test.describe(
   'Verify comments API endpoint',
-  { tag: ['@GAD-R08-02', '@api'] },
+  { tag: ['@GAD-R08-02', '@smoke'] },
   () => {
     test.describe('verify each condition in separate test', () => {
       test('GET comments returns status code 200', async ({ request }) => {
@@ -19,7 +19,7 @@ test.describe(
 
       test(
         'GET comments should return at least one comment',
-        { tag: ['@predefined_data', '@api'] },
+        { tag: '@predefined_data' },
         async ({ request }) => {
           // Arrange
           const expectedMinCommentCount = 1;
@@ -38,7 +38,7 @@ test.describe(
 
       test(
         'GET comments return comment object',
-        { tag: ['@predefined_data', '@api'] },
+        { tag: '@predefined_data' },
         async ({ request }) => {
           // Arrange
           const expectedRequiredFields = [
