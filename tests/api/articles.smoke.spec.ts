@@ -1,4 +1,5 @@
 import { expect, test } from '@_src/fixtures/merge.fixture';
+import { apiLinks } from '@_src/utils/api.util';
 
 test.describe(
   'Verify articles API endpoint',
@@ -8,10 +9,9 @@ test.describe(
       test('GET articles returns status code 200', async ({ request }) => {
         // Arrange
         const expectedStatusCode = 200;
-        const articlesUrl = '/api/articles';
 
         // Act
-        const response = await request.get(articlesUrl);
+        const response = await request.get(apiLinks.articlesUrl);
 
         // Assert
         expect(response.status()).toBe(expectedStatusCode);
@@ -23,10 +23,9 @@ test.describe(
         async ({ request }) => {
           // Arrange
           const expectedMinArticleCount = 1;
-          const articlesUrl = '/api/articles';
 
           // Act
-          const response = await request.get(articlesUrl);
+          const response = await request.get(apiLinks.articlesUrl);
           const responseJson = await response.json();
 
           // Assert
@@ -49,10 +48,9 @@ test.describe(
             'date',
             'image',
           ];
-          const articlesUrl = '/api/articles';
 
           // Act
-          const response = await request.get(articlesUrl);
+          const response = await request.get(apiLinks.articlesUrl);
           const responseJson = await response.json();
           const article = responseJson[0];
 
@@ -71,8 +69,7 @@ test.describe(
       { tag: '@predefined_data' },
       async ({ request }) => {
         // Arrange
-        const articlesUrl = '/api/articles';
-        const response = await request.get(articlesUrl);
+        const response = await request.get(apiLinks.articlesUrl);
 
         await test.step('GET articles returns status code 200', async () => {
           const expectedStatusCode = 200;
