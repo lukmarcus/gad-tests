@@ -1,7 +1,7 @@
 import { prepareRandomArticle } from '@_src/factories/article.factory';
 import { prepareRandomComment } from '@_src/factories/comment.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
-import { testUser1 } from '@_src/test-data/user.data';
+import { getAuthorizationHeaders as getAuthorizationHeader } from '@_src/utils/api.util';
 
 test.describe(
   'Verify comments CRUD operations',
@@ -11,25 +11,13 @@ test.describe(
     let headers: { [key: string]: string };
 
     test.beforeAll('create an article', async ({ request }) => {
-      // Login
-      const loginUrl = '/api/login';
-      const userData = {
-        email: testUser1.userEmail,
-        password: testUser1.userPassword,
-      };
-      const responseLogin = await request.post(loginUrl, {
-        data: userData,
-      });
-      const responseLoginJson = await responseLogin.json();
+      headers = await getAuthorizationHeader(request);
 
       // Create article
       const articlesUrl = '/api/articles';
 
       const randomArticleData = prepareRandomArticle();
 
-      headers = {
-        Authorization: `Bearer ${responseLoginJson.access_token}`,
-      };
       const articleData = {
         title: randomArticleData.title,
         body: randomArticleData.body,
