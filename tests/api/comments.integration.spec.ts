@@ -1,8 +1,8 @@
-import { prepareRandomComment } from '@_src/factories/comment.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
 import {
   getAuthorizationHeaders as getAuthorizationHeader,
   prepareArticlePayload,
+  prepareCommentPayload,
 } from '@_src/utils/api.util';
 
 test.describe(
@@ -35,13 +35,7 @@ test.describe(
       // Arrange
       const expectedStatusCode = 401;
       const commentsUrl = '/api/comments';
-
-      const randomCommentData = prepareRandomComment();
-      const commentData = {
-        article_id: articleId,
-        body: randomCommentData.body,
-        date: '2024-10-02T11:11:11Z',
-      };
+      const commentData = prepareCommentPayload(articleId);
 
       // Act
       const response = await request.post(commentsUrl, {
@@ -55,16 +49,8 @@ test.describe(
     test('should create a comment with logged-in user', async ({ request }) => {
       // Arrange
       const expectedStatusCode = 201;
-
       const commentsUrl = '/api/comments';
-
-      const randomCommentData = prepareRandomComment();
-
-      const commentData = {
-        article_id: articleId,
-        body: randomCommentData.body,
-        date: '2024-10-02T11:11:11Z',
-      };
+      const commentData = prepareCommentPayload(articleId);
 
       // Act
       const responseComment = await request.post(commentsUrl, {
