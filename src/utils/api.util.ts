@@ -8,7 +8,20 @@ export const apiLinks = {
   commentsUrl: '/api/comments',
 };
 
-interface Headers {
+export interface ArticlePayload {
+  title: string;
+  body: string;
+  date: string;
+  image: string;
+}
+
+interface CommentPayload {
+  article_id: number;
+  body: string;
+  date: string;
+}
+
+export interface Headers {
   [key: string]: string;
 }
 
@@ -31,13 +44,6 @@ export async function getAuthorizationHeaders(
   };
 }
 
-interface ArticlePayload {
-  title: string;
-  body: string;
-  date: string;
-  image: string;
-}
-
 export function prepareArticlePayload(): ArticlePayload {
   const randomArticleData = prepareRandomArticle();
 
@@ -50,12 +56,6 @@ export function prepareArticlePayload(): ArticlePayload {
   };
 
   return articleData;
-}
-
-interface CommentPayload {
-  article_id: number;
-  body: string;
-  date: string;
 }
 
 export function prepareCommentPayload(articleId: number): CommentPayload {
