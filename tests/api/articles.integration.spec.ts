@@ -8,13 +8,11 @@ import {
 } from '@_src/utils/api.util';
 import { APIResponse } from '@playwright/test';
 
-test.describe(
-  'Verify articles CRUD operations',
-  { tag: ['@GAD-R09-01', '@crud'] },
-  () => {
-    test('should not create an article without a logged-in user', async ({
-      request,
-    }) => {
+test.describe('Verify articles CRUD operations', { tag: '@crud' }, () => {
+  test(
+    'should not create an article without a logged-in user',
+    { tag: '@GAD-R09-01' },
+    async ({ request }) => {
       // Arrange
       const expectedStatusCode = 401;
 
@@ -27,26 +25,30 @@ test.describe(
 
       // Assert
       expect(response.status()).toBe(expectedStatusCode);
+    },
+  );
+
+  test.describe('CRUD operations', () => {
+    let responseArticle: APIResponse;
+    let headers: Headers;
+    let articleData: ArticlePayload;
+
+    test.beforeAll('should login', async ({ request }) => {
+      headers = await getAuthorizationHeaders(request);
     });
 
-    test.describe('CRUD operations', { tag: ['@GAD-R09-01', '@crud'] }, () => {
-      let responseArticle: APIResponse;
-      let headers: Headers;
-      let articleData: ArticlePayload;
-
-      test.beforeAll('should login', async ({ request }) => {
-        headers = await getAuthorizationHeaders(request);
+    test.beforeEach('create an article', async ({ request }) => {
+      articleData = prepareArticlePayload();
+      responseArticle = await request.post(apiLinks.articlesUrl, {
+        headers,
+        data: articleData,
       });
+    });
 
-      test.beforeEach('create an article', async ({ request }) => {
-        articleData = prepareArticlePayload();
-        responseArticle = await request.post(apiLinks.articlesUrl, {
-          headers,
-          data: articleData,
-        });
-      });
-
-      test('should create an article with logged-in user', async () => {
+    test(
+      'should create an article with logged-in user',
+      { tag: '@GAD-R09-01' },
+      async () => {
         // Arrange
         const expectedStatusCode = 201;
 
@@ -60,11 +62,13 @@ test.describe(
         const articleJson = await responseArticle.json();
         expect.soft(articleJson.title).toEqual(articleData.title);
         expect.soft(articleJson.body).toEqual(articleData.body);
-      });
+      },
+    );
 
-      test('should delete an article with logged-in user', async ({
-        request,
-      }) => {
+    test(
+      'should delete an article with logged-in user',
+      { tag: '@GAD-R09-03' },
+      async ({ request }) => {
         await new Promise((resolve) => setTimeout(resolve, 5000));
 
         // Arrange
@@ -96,11 +100,13 @@ test.describe(
           responseArticleGet.status(),
           `expect status code ${expectedDeletedArticleStatusCode} and received ${responseArticleGet.status()}`,
         ).toBe(expectedDeletedArticleStatusCode);
-      });
+      },
+    );
 
-      test('should not delete an article with non logged-in user', async ({
-        request,
-      }) => {
+    test(
+      'should not delete an article with non logged-in user',
+      { tag: '@GAD-R09-03' },
+      async ({ request }) => {
         await new Promise((resolve) => setTimeout(resolve, 5000));
 
         // Arrange
@@ -129,7 +135,7 @@ test.describe(
           responseArticleGet.status(),
           `expect status code ${expectedDeletedArticleStatusCode} and received ${responseArticleGet.status()}`,
         ).toBe(expectedDeletedArticleStatusCode);
-      });
-    });
-  },
-);
+      },
+    );
+  });
+});
