@@ -127,14 +127,14 @@ test.describe('Verify articles CRUD operations', { tag: '@crud' }, () => {
         ).toBe(expectedStatusCode);
 
         // Assert check not deleted article
-        const expectedDeletedArticleStatusCode = 200;
+        const expectedNotDeletedArticleStatusCode = 200;
         const responseArticleGet = await request.get(
           `${apiLinks.articlesUrl}/${articleId}`,
         );
         expect(
           responseArticleGet.status(),
-          `expect status code ${expectedDeletedArticleStatusCode} and received ${responseArticleGet.status()}`,
-        ).toBe(expectedDeletedArticleStatusCode);
+          `expect status code ${expectedNotDeletedArticleStatusCode} and received ${responseArticleGet.status()}`,
+        ).toBe(expectedNotDeletedArticleStatusCode);
       },
     );
   });

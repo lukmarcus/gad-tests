@@ -22,7 +22,7 @@ test.describe(
         { tag: '@predefined_data' },
         async ({ request }) => {
           // Arrange
-          const expectedMinArticleCount = 1;
+          const expectedMinArticlesCount = 1;
 
           // Act
           const response = await request.get(apiLinks.articlesUrl);
@@ -30,7 +30,7 @@ test.describe(
 
           // Assert
           expect(responseJson.length).toBeGreaterThanOrEqual(
-            expectedMinArticleCount,
+            expectedMinArticlesCount,
           );
         },
       );
@@ -79,10 +79,10 @@ test.describe(
 
         const responseJson = await response.json();
         await test.step('GET articles should return at least one article', async () => {
-          const expectedMinArticleCount = 1;
+          const expectedMinArticlesCount = 1;
 
           expect(responseJson.length).toBeGreaterThanOrEqual(
-            expectedMinArticleCount,
+            expectedMinArticlesCount,
           );
         });
 
