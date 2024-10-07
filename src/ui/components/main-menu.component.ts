@@ -1,6 +1,6 @@
-import { ArticlePage } from '@_src/pages/article.page';
-import { CommentsPage } from '@_src/pages/comments.page';
-import { HomePage } from '@_src/pages/home.page';
+import { ArticlePage } from '@_src/ui/pages/article.page';
+import { CommentsPage } from '@_src/ui/pages/comments.page';
+import { HomePage } from '@_src/ui/pages/home.page';
 import { Page } from '@playwright/test';
 
 export class MainMenuComponent {
