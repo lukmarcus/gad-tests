@@ -26,7 +26,21 @@ test.describe('Verify comments CRUD operations', { tag: '@crud' }, () => {
     const responseArticleJson = await responseArticle.json();
     articleId = responseArticleJson.id;
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    // assert article exists
+    const expectedStatusCode = 200;
+
+    await expect(async () => {
+      const responseArticleCreated = await request.get(
+        `${apiLinks.articlesUrl}/${articleId}`,
+        {},
+      );
+      expect(
+        responseArticleCreated.status(),
+        `Expected status: ${expectedStatusCode} and observed: ${responseArticleCreated.status()}`,
+      ).toBe(200);
+    }).toPass({
+      timeout: 2_000,
+    });
   });
 
   test(
@@ -57,7 +71,23 @@ test.describe('Verify comments CRUD operations', { tag: '@crud' }, () => {
         headers,
         data: commentData,
       });
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      // assert comment exists
+      const commentJson = await responseComment.json();
+      const expectedStatusCode = 200;
+
+      await expect(async () => {
+        const responseCommentCreated = await request.get(
+          `${apiLinks.commentsUrl}/${commentJson.id}`,
+          {},
+        );
+        expect(
+          responseCommentCreated.status(),
+          `Expected status: ${expectedStatusCode} and observed: ${responseCommentCreated.status()}`,
+        ).toBe(200);
+      }).toPass({
+        timeout: 2_000,
+      });
     });
 
     test(
@@ -83,8 +113,6 @@ test.describe('Verify comments CRUD operations', { tag: '@crud' }, () => {
       'should delete a comment with logged-in user',
       { tag: '@GAD-R09-04' },
       async ({ request }) => {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-
         // Arrange
         const expectedStatusCode = 200;
         const commentJson = await responseComment.json();
@@ -121,8 +149,6 @@ test.describe('Verify comments CRUD operations', { tag: '@crud' }, () => {
       'should not delete a comment with non logged-in user',
       { tag: '@GAD-R09-04' },
       async ({ request }) => {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-
         // Arrange
         const expectedStatusCode = 401;
         const commentJson = await responseComment.json();

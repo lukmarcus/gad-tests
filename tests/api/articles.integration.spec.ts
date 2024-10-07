@@ -122,8 +122,6 @@ test.describe('Verify articles CRUD operations', { tag: '@crud' }, () => {
       'should not delete an article with non logged-in user',
       { tag: '@GAD-R09-03' },
       async ({ request }) => {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-
         // Arrange
         const expectedStatusCode = 401;
         const articleJson = await responseArticle.json();
