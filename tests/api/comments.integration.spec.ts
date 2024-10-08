@@ -1,5 +1,6 @@
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { getAuthorizationHeaders as getAuthorizationHeader } from '@_src/api/factories/authorization-header.api.factory';
+import { createCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { CommentPayload } from '@_src/api/models/comment.api.model';
 import { Headers } from '@_src/api/models/headers.api.model';
@@ -44,27 +45,12 @@ test.describe('Verify comments CRUD operations', { tag: '@crud' }, () => {
 
     test.beforeEach('create a comment', async ({ request }) => {
       commentData = prepareCommentPayload(articleId);
-      responseComment = await request.post(apiUrls.commentsUrl, {
+
+      responseComment = await createCommentWithApi(
+        request,
         headers,
-        data: commentData,
-      });
-
-      // assert comment exists
-      const commentJson = await responseComment.json();
-      const expectedStatusCode = 200;
-
-      await expect(async () => {
-        const responseCommentCreated = await request.get(
-          `${apiUrls.commentsUrl}/${commentJson.id}`,
-          {},
-        );
-        expect(
-          responseCommentCreated.status(),
-          `Expected status: ${expectedStatusCode} and observed: ${responseCommentCreated.status()}`,
-        ).toBe(200);
-      }).toPass({
-        timeout: 2_000,
-      });
+        commentData,
+      );
     });
 
     test(
